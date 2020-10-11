@@ -1,38 +1,36 @@
 # stock picker for the Odin Project
 
 def stock_picker(stocks)
-    lowest = stocks[0]
+    lowest_stock = stocks[0]
     lowest_index = nil
-    highest = 0
     highest_index = nil
-    buy = 0
-    sell = 0
-    days = []
-    has_lowest = false
+    most_profit = 0
+    current_profit = 0
+
+    buy_stocks = []
 
     stocks.each do |stock|
-        if stock < lowest
-            has_lowest = true
-            lowest = stock
-            buy = stocks.index(stock)
-            lowest_index = stocks.index(stock)        
-        end
-    end
-
-    stocks.each do |stock|
-        if stock > highest
-            highest_index = stocks.index(stock)
-            if highest_index > lowest_index    
-                highest = stock
-                sell = stocks.index(stock)
+        if stock < lowest_stock
+            lowest_stock = stock
+            curr_index = stocks.index(stock)
+            days_left = stocks.drop(curr_index + 1)
+            
+            days_left.each do |day_stock|
+                current_profit = day_stock - lowest_stock
+                if current_profit > most_profit
+                    most_profit = current_profit
+                    highest_index = stocks.index(day_stock)
+                    lowest_index = curr_index
+                end
             end
         end
     end
 
-    days.push(buy)
-    days.push(sell)
-    puts days
+    buy_stocks.push(lowest_index)
+    buy_stocks.push(highest_index)
+
+    return buy_stocks
 end
 
 stocks = [17,3,6,9,15,8,6,1,10]
-stock_picker(stocks)
+p stock_picker(stocks)
