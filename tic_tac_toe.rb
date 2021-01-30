@@ -11,11 +11,13 @@ class Player
         @spaces = []
     end
 
-    def claim
+    def claim(board)
         # available slot is chosen from the board
         puts "#@name, claim your space:"
         space = gets
-        @spaces.push(space.chomp.to_i)
+        if board.slots(space.chomp.to_i).is_a? Integer
+            @spaces.push(space.chomp.to_i)
+        end
         return space.chomp.to_i
     end
 end
@@ -132,10 +134,10 @@ class Game
     end
 
     def validate_choice(player, board)
-        choice = player.claim
+        choice = player.claim(board)
         if board.slots(choice).is_a? Integer
-            mark = player.piece
-            return board.set_slots(choice, mark)
+            
+            return board.set_slots(choice, player.piece)
         else
             puts "Try another available space:"
             validate_choice(player, board)
@@ -151,10 +153,8 @@ class Game
 
 end
 
-
-
-p1 = Player.new('Austin', 'A')
-p2 = Player.new('Zach', 'Z')
+p1 = Player.new('PlayerOne', 'X')
+p2 = Player.new('PlayerTwo', 'O')
 board = GameBoard.new
 game = Game.new
 
