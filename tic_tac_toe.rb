@@ -89,13 +89,21 @@ class Game
             validate_choice(p1, board)
             board.set_board
             
-            check_for_winner(p1, board, @game_over)
+            check_for_winner(p1, board)
+            if @game_over
+                break
+            end
+
             
             board.display_board
             validate_choice(p2, board)
             board.set_board
     
-            check_for_winner(p2, board, @game_over)
+           check_for_winner(p2, board)
+           if @game_over
+                break
+           end
+
             turns += 1
             if turns == Game::MAX_TURNS
                 puts "Tie game. Thanks for playing!"
@@ -110,15 +118,12 @@ class Game
         end
     end
 
-    def check_for_winner(player, board, winner)
+    def check_for_winner(player, board)
         # if either player has one of the matching patterns
         # that player is announced the winner otherwise keep playing
         for pattern in board.winning_patterns do
             connected = 0
             for space in player.spaces do
-                p pattern
-                p space
-                p player.spaces 
                 if pattern.include?(space)
                     connected += 1
                 end
@@ -128,7 +133,6 @@ class Game
                 puts "#{player.name} wins!"
                 puts "Good game!"
                 @game_over = true
-                break
             end 
         end
     end
